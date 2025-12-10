@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: petfriends-transporte
+
+  datasource:
+    url: jdbc:h2:mem:transportedb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  cloud:
+    stream:
+      bindings:
+        receberPedidoDespachado-in-0:
+          destination: pedido-despachado
+          group: transporte-group
+        pedidoEnviado-out-0:
+          destination: pedido-enviado
+
+      gcp:
+        pubsub:
+          binder:
+            project-id: petfriends-project
+        credentials:
+          location: classpath:gcp-credentials.json
+
+server:
+  port: 8083
